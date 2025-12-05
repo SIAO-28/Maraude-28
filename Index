@@ -9,7 +9,6 @@
     body, html { margin: 0; padding: 0; height: 100%; }
     #map { height: 100%; width: 100%; }
 
-    /* --- LÉGENDE --- */
     .legend {
       position: absolute;
       bottom: 20px;
@@ -43,7 +42,6 @@
 <body>
   <div id="map"></div>
 
-  <!-- LÉGENDE -->
   <div class="legend">
     <div id="showBlue"><span class="circle blue"></span> Maraude</div>
     <div id="showRed"><span class="circle red"></span> Accueil de jour</div>
@@ -129,16 +127,16 @@
     const svpInfo = `<b>Saint Vincent de Paul</b><br>Mercredi : 14h - 17h`;
     L.marker([48.43731818272861, 1.4831399500939169], { icon: redIcon }).bindPopup(svpInfo).addTo(accueilLayer);
 
-    // --- Boutons légende (DOM chargé) ---
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('showBlue').onclick = () => {
-        map.addLayer(maraudeLayer);
-        map.removeLayer(accueilLayer);
-      };
-      document.getElementById('showRed').onclick = () => {
-        map.addLayer(accueilLayer);
-        map.removeLayer(maraudeLayer);
-      };
+    // --- Boutons légende ---
+    // Directement après que les éléments sont créés
+    document.getElementById('showBlue').addEventListener('click', () => {
+      if (!map.hasLayer(maraudeLayer)) map.addLayer(maraudeLayer);
+      if (map.hasLayer(accueilLayer)) map.removeLayer(accueilLayer);
+    });
+
+    document.getElementById('showRed').addEventListener('click', () => {
+      if (!map.hasLayer(accueilLayer)) map.addLayer(accueilLayer);
+      if (map.hasLayer(maraudeLayer)) map.removeLayer(maraudeLayer);
     });
   </script>
 </body>
